@@ -1,6 +1,7 @@
 const path = require("node:path");
 const express = require("express");
 const expressSession = require('express-session');
+
 const pgSession = require('connect-pg-simple')(expressSession);
 const pgPool = require("./db/pool")
 const app = express();
@@ -10,7 +11,8 @@ const assetsPath = path.join(__dirname, "public");
 app.use(express.static(assetsPath));
 app.use(express.urlencoded({ extended: true }));
 
-
+const indexRouter = require('./routes/indexRouter');
+const passport = require("passport");
 
 // === Session Middleware ===
 app.use(expressSession({
@@ -26,11 +28,10 @@ app.use(expressSession({
 }));
 
 
-
-
-app.use("/", (req, res)=>{
-   res.render('index')
-});
+require('./config/passport')
+app.use(passport.initialize())
+app.use(passport.session())
+app.use("/", indexRouter);
 app.use((req,res)=>{
     res.status(400).send('Page not found')
 })
