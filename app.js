@@ -31,6 +31,7 @@ app.use(expressSession({
 require('./config/passport')
 app.use(passport.initialize())
 app.use(passport.session())
+
 app.use("/", indexRouter);
 app.use((req,res)=>{
     res.status(400).send('Page not found')

@@ -3,11 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>Document</title>
+    <title>Home</title>
      <link rel="stylesheet" href="/css/output.css">
 </head>
 <body>
-      <h3 class="text-2xl font-bold text-pink-600 text-center">Are You Sure You Want To Delete This Movie?</h3>
-      <h1>Hello Motherfucker</h1>
+    <body>
+  <% if (locals.user) {%>
+    <h1>WELCOME BACK <%= user.username %></h1>
+    <a href="/log-out">LOG OUT</a>
+  <% } else { %>
+    <h1>please log in</h1>
+    <form action="/log-in" method="POST">
+      <label for="username">Username</label>
+      <input id="username" name="username" placeholder="username" type="text" />
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" />
+      <button type="submit">Log In</button>
+    </form>
+  <%}%>
+</body>
+
 </body>
 </html>
