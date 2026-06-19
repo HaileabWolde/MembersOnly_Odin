@@ -1,4 +1,5 @@
 const passport = require("passport");
+const bcrypt = require("bcryptjs");
 const pgPool = require("../db/pool")
 const LocalStrategy = require('passport-local').Strategy;
 
@@ -6,11 +7,11 @@ const verifyCallback = async (username, password, done) => {
     try {
       const { rows } = await  pgPool.query("SELECT * FROM users WHERE username = $1", [username]);
       const user = rows[0];
-
+      const match = await bcrypt.compare(password, user.password);
       if (!user) {
         return done(null, false, { message: "Incorrect username" });
       }
-      if (user.password !== password) {
+      if (!match) {
         return done(null, false, { message: "Incorrect password" });
       }
       return done(null, user);
