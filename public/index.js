@@ -78,6 +78,7 @@ function validateForm(event){
         confrimpassword.style.display = "none";
         confrim_password.style.border = '2px solid #54ACDB';
         alert("Thank You Your Account Will be Created Shortly")
+        myform.submit();
     }
     }
 myform.addEventListener('submit', validateForm);

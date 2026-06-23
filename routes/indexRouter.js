@@ -5,21 +5,15 @@ const pgPool = require("../db/pool")
 const indexRouter = Router();
 
 
+//fetching Controllers
+const {createUser} = require("../controllers/userQuery")
+
 indexRouter.get('/', (req, res)=> {
     
     res.render('index', { user: req.user })
 })
 indexRouter.get("/sign-up", (req, res) => res.render("sign-up-form"));
-indexRouter.post("/sign-up", async (req, res, next) => {
-  try {
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  await pgPool.query("INSERT INTO users (username, password) VALUES ($1, $2)", [req.body.username, hashedPassword]);
-  res.redirect("/");
- } catch (error) {
-    console.error(error);
-    next(error);
-   }
-});
+indexRouter.post("/sign-up", createUser);
 indexRouter.post("/log-in", passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/",
