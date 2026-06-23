@@ -12,6 +12,7 @@ app.use(express.static(assetsPath));
 app.use(express.urlencoded({ extended: true }));
 
 const indexRouter = require('./routes/indexRouter');
+const {validateUser} = require('./controllers/userQuery')
 const passport = require("passport");
 
 // === Session Middleware ===
@@ -40,7 +41,7 @@ app.use((req,res)=>{
 // Keep this as is for real server errors
 app.use((err, req, res, next) => {
     console.error(err);
-    res.status(err.statusCode || 500).render('error', { 
+    res.status(err.statusCode || 500).render('partials/error', { 
         message: err.message || "Something went wrong",
         statusCode: err.statusCode || 500
     });
