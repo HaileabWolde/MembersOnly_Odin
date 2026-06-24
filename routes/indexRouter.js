@@ -10,15 +10,28 @@ const {createUser} = require("../controllers/userQuery")
 const {validateUser} = require('../controllers/userQuery')
 
 indexRouter.get('/', (req, res)=> {
-    
+     console.log(req.session),
+  console.log(req.user),
     res.render('index', { user: req.user })
 })
 indexRouter.get("/sign-up", (req, res) => res.render("sign-up-form"));
-indexRouter.get('/log-in', (req, res)=> res.render("login-form"))
+indexRouter.get('/log-in', (req, res)=> {
+   
+const messages = req.session.messages || [];
+    
+    // Optional: clear the messages so they don't show again on refresh
+    req.session.messages = [];
+
+    res.render("login-form", {
+        errors: messages.map(msg => ({ msg }))
+    });
+})
 indexRouter.post("/sign-up", validateUser, createUser);
-indexRouter.post("/log-in", passport.authenticate("local", {
+indexRouter.post("/log-in",
+ 
+  passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/",
+    failureRedirect: "/log-in",
     failureMessage: true,
   }))
 

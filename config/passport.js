@@ -7,10 +7,12 @@ const verifyCallback = async (username, password, done) => {
     try {
       const { rows } = await  pgPool.query("SELECT * FROM users WHERE username = $1", [username]);
       const user = rows[0];
-      const match = await bcrypt.compare(password, user.password);
-      if (!user) {
+     
+       if (!user) {
         return done(null, false, { message: "Incorrect username" });
       }
+      const match = await bcrypt.compare(password, user.password);
+     
       if (!match) {
         return done(null, false, { message: "Incorrect password" });
       }
@@ -19,7 +21,11 @@ const verifyCallback = async (username, password, done) => {
       return done(err);
     }
   }
-const startegy = new LocalStrategy(verifyCallback)
+const startegy = new LocalStrategy({
+      usernameField: "username",     // matches your form field name
+      passwordField: "password",     // matches your form field name
+      passReqToCallback: false       // optional
+    },verifyCallback)
 passport.use(startegy)
 passport.serializeUser((user, done) => {
   done(null, user.id);
