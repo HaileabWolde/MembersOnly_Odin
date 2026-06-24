@@ -14,6 +14,7 @@ indexRouter.get('/', (req, res)=> {
     res.render('index', { user: req.user })
 })
 indexRouter.get("/sign-up", (req, res) => res.render("sign-up-form"));
+indexRouter.get('/log-in', (req, res)=> res.render("login-form"))
 indexRouter.post("/sign-up", validateUser, createUser);
 indexRouter.post("/log-in", passport.authenticate("local", {
     successRedirect: "/",

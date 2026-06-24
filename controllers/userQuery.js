@@ -10,7 +10,7 @@ const validateUser = [
     .isLength({ min: 1, max: 10 }).withMessage(`First name ${lengthErr}`),
   body("lastname").trim()
     .isAlpha().withMessage(`Last name ${alphaErr}`)
-    .isLength({ min: 1, max: 10 }).withMessage(`Last name ${lengthErr}`),
+    .isLength({ min: 1, max: 15 }).withMessage(`Last name ${lengthErr}`),
 
  
 // Option 2 — add username and password to your validateUser array
@@ -31,16 +31,23 @@ async function createUser(req, res, next){
      // Use req.body directly instead of matchedData
     const { firstname, lastname, username, password } = req.body;
 
-    // Add this to confirm values before sending to db
-    console.log({ firstname, lastname, username, password });
+    
 
     try {
         await db.createUser(firstname, lastname, username, password);
-        res.redirect("/");
+        res.redirect("/log-in");
     } catch (error) {
-        console.log(error);
-        next(error);
-    }
+        console.error(error);
+
+        if (error.code === '23505') { // PostgreSQL unique violation code
+            return res.status(400).render("sign-up-form", {
+              title: "Create user",
+              errors: [{ msg: "Username already taken" }]
+         });
+  }
+
+  next(error); // unexpected error
+}
 }
 
 module.exports = {
