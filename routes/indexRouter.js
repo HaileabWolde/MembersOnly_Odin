@@ -10,8 +10,7 @@ const {createUser} = require("../controllers/userQuery")
 const {validateUser} = require('../controllers/userQuery')
 
 indexRouter.get('/', (req, res)=> {
-     console.log(req.session),
-  console.log(req.user),
+   
     res.render('index', { user: req.user })
 })
 indexRouter.get("/sign-up", (req, res) => res.render("sign-up-form"));
@@ -26,6 +25,8 @@ const messages = req.session.messages || [];
         errors: messages.map(msg => ({ msg }))
     });
 })
+indexRouter.get('/new-post', (req, res)=> {
+  res.render("new-post", { user: req.user })})
 indexRouter.post("/sign-up", validateUser, createUser);
 indexRouter.post("/log-in",
  
