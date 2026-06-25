@@ -10,7 +10,12 @@ async function createUser(firstname, lastname, username, password){
 
 }
 
+async function createPost(id, post, description){
+  const {rows} = await pgPool.query("INSERT INTO post(title, content, creator_id) VALUES ($1, $2, $3)", [ post, description, id])
+}
+
 module.exports = {
-    createUser
+    createUser,
+    createPost
 }
 

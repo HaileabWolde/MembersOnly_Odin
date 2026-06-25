@@ -10,6 +10,33 @@
 
     <div class="max-w-4xl mx-auto">
       <%-include('header', {user: locals.user}) %>
+      <div class="max-w-2xl mx-auto mt-20">
+            <form
+            id="newform"
+            action="/new-post"
+            method="POST"
+             class="flex flex-col gap-8"
+            >
+            <input 
+            id="post" 
+            name="post" 
+            type="text" 
+            placeholder="Post Title"
+            class="w-full bg-white/10 border border-white/20 rounded-2xl px-5 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition">
+            <textarea
+            name="description"
+            rows="8"
+            placeholder="Write Something"
+            class="w-full bg-white/10 border border-white/20 rounded-2xl px-5 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition"
+            >
+
+            </textarea>
+              <button type="submit" 
+                class=" bg-blue-600 hover:bg-blue-700 text-white font-medium p-4 rounded-2xl transition cursor-pointer self-end w-[20%]">
+           Post
+        </button>
+            </form>
+      </div>
     </div>
 </body>
 </html>
