@@ -10,12 +10,26 @@ async function createUser(firstname, lastname, username, password){
 
 }
 
+async function fetchAllPost(){
+  const {rows} = await pgPool.query(`SELECT 
+    u.username AS author_name, 
+    p.title AS post_title,
+	p.id    AS post_id,
+	p.content AS post_content,
+	p.created_at as post_created
+	
+FROM users u
+INNER JOIN post p 
+    ON u.id = p.creator_id`)
+    return rows;
+}
 async function createPost(id, post, description){
   const {rows} = await pgPool.query("INSERT INTO post(title, content, creator_id) VALUES ($1, $2, $3)", [ post, description, id])
 }
 
 module.exports = {
     createUser,
-    createPost
+    createPost,
+    fetchAllPost
 }
 

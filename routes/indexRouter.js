@@ -8,13 +8,10 @@ const indexRouter = Router();
 //fetching Controllers
 const {createUser} = require("../controllers/userQuery")
 
-const {newPost} = require("../controllers/PostQuery")
+const {newPost, validatePost, fetchPosts} = require("../controllers/postQuery")
 const {validateUser} = require('../controllers/userQuery')
 
-indexRouter.get('/', (req, res)=> {
-   
-    res.render('index', { user: req.user })
-})
+indexRouter.get('/', fetchPosts)
 indexRouter.get("/sign-up", (req, res) => res.render("sign-up-form"));
 indexRouter.get('/log-in', (req, res)=> {
    
@@ -30,7 +27,7 @@ const messages = req.session.messages || [];
 indexRouter.get('/new-post', (req, res)=> {
   res.render("new-post", { user: req.user })})
 
-indexRouter.post("/new-post", newPost)
+indexRouter.post("/new-post", validatePost, newPost)
 indexRouter.post("/sign-up", validateUser, createUser);
 indexRouter.post("/log-in",
  
