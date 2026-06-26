@@ -59,7 +59,25 @@ SELECT
     *
 FROM user_sessions
 
+
+
+
+ALTER TABLE users
+ADD CONSTRAINT unique_user_name UNIQUE (username);
+
+
 DROP TABLE users 
 
 DELETE FROM user_sessions;
+
+SELECT 
+    u.username AS author_name, 
+    p.title AS post_title,
+	p.id    AS post_id,
+	p.content AS post_content,
+	p.created_at as post_created
+	
+FROM users u
+INNER JOIN post p 
+    ON u.id = p.creator_id WHERE u.id = 17
 

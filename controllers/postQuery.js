@@ -34,7 +34,7 @@ async function newPost(req, res, next){
 async function fetchPosts(req, res, next){
     try{
         const posts = await db.fetchAllPost()
-       
+   
         res.render('index', {
             user: req.user,
             posts: posts,
@@ -47,8 +47,40 @@ async function fetchPosts(req, res, next){
     }
 }
 
+async function fetchSinglePost(req, res){
+    const {id} = req.params
+
+    try {
+        const post = await db.fetchSinglePost(id)
+        
+        console.log(req.user)
+        res.render('single-post', {
+            user: req.user,
+            posts: post,
+             dayjs: dayjs // Pass the dayjs function to EJS
+        })
+    }
+    catch(error){
+        console.log(error)
+        next(error)
+    }
+}
+async function deleteSinglePost(req, res){
+    const {id} = req.params
+    try{
+        await db.deletePost(id)
+        res.redirect("/")
+    }
+    catch(error){
+        console.log(error)
+        next(error)
+    }
+}
+
 module.exports = {
     newPost,
     validatePost,
-    fetchPosts
+    fetchPosts,
+    fetchSinglePost,
+    deleteSinglePost
 }

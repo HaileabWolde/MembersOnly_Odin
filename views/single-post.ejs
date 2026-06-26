@@ -12,10 +12,22 @@
     <div class="max-w-4xl mx-auto">
         <%- include('header', {user: locals.user, }) %>
 
-        <div class="max-w-2xl mx-auto mt-20">
-            <% if (posts && posts.length > 0) { %>
+        <div class="max-w-2xl mx-auto mt-20 w-full bg-white/10 border border-white/20 
+                                rounded-3xl px-8 py-7 mb-6 text-white flex flex-col gap-5 
+                                transition-all duration-300 backdrop-blur-md">
+                <% if(user){
+                    %>
+                    <h1 class="font-bold text-3xl leading-tight"><%=user.username.toUpperCase() %></h1>
+                    <div class="bg-white/10 border border-white/20 px-5 py-2.5 rounded-2xl flex justify-center gap-3 w-1/3">
+                            <p class="font-semibold"><%=user.firstname%></p>
+                            <p class="font-semibold"><%=user.lastname%></p>
+                    </div>
+                    <%
+                } %>
+
+                 <% if (posts && posts.length > 0) { %>
                 <% posts.forEach((post) => { %>
-                    <div class="w-full bg-white/10 border border-white/20 hover:border-white/40 
+                    <div class="w-full bg-white/1  border-white/20 hover:border-white/40 
                                 rounded-3xl px-8 py-7 mb-6 text-white flex flex-col gap-5 
                                 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/30 backdrop-blur-md">
                         
@@ -46,6 +58,18 @@
                         <p class="font-semibold leading-relaxed text-lg text-white/90">
                             <%= post.post_content %>
                         </p>
+                        <form
+                        class="self-end"
+                        action="/delete-post/<%=post.post_id%>" method="POST"
+                        >
+                        <button
+                        type="submit"
+                        >
+                             <i class="fa-solid fa-trash-can text-red-400  cursor-pointer"></i>
+                        </button>
+                           
+                        </form>
+                        
                     </div>
                 <% }); %>
             <% } else { %>
